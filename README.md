@@ -58,12 +58,12 @@ patch DeepFaceLab/mainscripts/Merger.py < dfl_merger_mods.patch
 This command modifies `Merger.py` to allow it to be controlled by an environment variable for automated runs. A backup of the original file (`Merger.py.bak`) was created in the same directory when you first ran the agent's command.
 
 Create yolo directory, download ultraface-RFB-640.onnx and put it inside yolo directory
-# Source: ONNX Model Zoo on Hugging Face
-# URL: https://huggingface.co/onnxmodelzoo/version-RFB-640/resolve/main/version-RFB-640.onnx
+Source: ONNX Model Zoo on Hugging Face
+URL: https://huggingface.co/onnxmodelzoo/version-RFB-640/resolve/main/version-RFB-640.onnx
 
 Download landmark_pfld.onnx and put it inside yolo directory also
-# Source: Cloned from the pytorch_face_landmark GitHub repository. The direct download link was unavailable due to Git LFS.
-# Repository: https://github.com/cunjian/pytorch_face_landmark
+Source: Cloned from the pytorch_face_landmark GitHub repository. The direct download link was unavailable due to Git LFS.
+Repository: https://github.com/cunjian/pytorch_face_landmark
 ---
 
 ## 2. Usage
