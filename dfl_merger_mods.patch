@@ -1,0 +1,56 @@
+--- DeepFaceLab/mainscripts/Merger.py.bak	2025-12-30 21:51:15.768895489 +0100
++++ DeepFaceLab/mainscripts/Merger.py	2025-12-30 21:54:52.869871885 +0100
+@@ -1,4 +1,5 @@
+-﻿import math
++﻿import os
++import math
+ import multiprocessing
+ import traceback
+ from pathlib import Path
+@@ -69,13 +70,40 @@
+                                                     place_model_on_cpu=True,
+                                                     run_on_cpu=run_on_cpu)
+ 
+-        is_interactive = io.input_bool ("Use interactive merger?", True) if not io.is_colab() else False
++        # --- Automated settings ---
++        merge_mode = os.environ.get('DFL_MERGE_MODE', 'default')
+ 
+-        if not is_interactive:
+-            cfg.ask_settings()
+-            
+-        subprocess_count = io.input_int("Number of workers?", max(8, multiprocessing.cpu_count()), 
+-                                        valid_range=[1, multiprocessing.cpu_count()], help_message="Specify the number of threads to process. A low value may affect performance. A high value may result in memory error. The value may not be greater than CPU cores." )
++        io.log_info("Using automated settings for non-interactive merge.")
++        is_interactive = False
++
++        if merge_mode == 'fast':
++            io.log_info("Applying FAST merge settings.")
++            # Faster 'overlay' mode with mask blurring to simulate seamless
++            cfg.mode = 'overlay'
++            cfg.blur_mask_modifier = 20
++        else:
++            io.log_info("Applying QUALITY merge settings (seamless).")
++            # User's original high-quality 'seamless' settings
++            cfg.mode = 'seamless'
++            cfg.blur_mask_modifier = 0
++
++        # Common settings for both modes
++        cfg.mask_mode = 4 # learned-prd*learned-dst
++        cfg.erode_mask_modifier = 0
++        cfg.motion_blur_power = 0
++        cfg.output_face_scale = 0
++        from merger.MergerConfig import ctm_str_dict
++        cfg.color_transfer_mode = ctm_str_dict['idt'] #5
++        cfg.sharpen_mode = 0 # None
++        cfg.super_resolution_power = 0
++        cfg.image_denoise_power = 0
++        cfg.bicubic_degrade_power = 0
++        cfg.color_degrade_power = 0
++        
++        # Set number of workers
++        subprocess_count = 16
++        io.log_info(f"Number of workers set to: {subprocess_count}")
++        # --- End of automated settings ---
+ 
+         input_path_image_paths = pathex.get_image_paths(input_path)
+ 
