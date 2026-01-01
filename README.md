@@ -64,7 +64,6 @@ URL: https://huggingface.co/onnxmodelzoo/version-RFB-640/resolve/main/version-RF
 Download landmark_pfld.onnx and put it inside yolo directory also
 Source: Cloned from the pytorch_face_landmark GitHub repository. The direct download link was unavailable due to Git LFS.
 Repository: https://github.com/cunjian/pytorch_face_landmark
----
 
 ## 2. Usage
 
