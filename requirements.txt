@@ -1,0 +1,5 @@
+# It is recommended to install these in the 'deepfacelab' conda environment.
+
+onnxruntime-gpu>=1.14.1
+opencv-python
+numpy
